@@ -1,0 +1,15 @@
+# Segredos e dados locais — nunca commitar
+api/config.php
+dev-db.json
+
+# Cópia de deploy (gerada a partir do projeto)
+enviar para o server/
+
+# Ferramentas de agente / caches pesadas
+.impeccable/
+.vendor/
+
+# Diversos OS
+Thumbs.db
+.DS_Store
+*.log

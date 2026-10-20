@@ -1,0 +1,37 @@
+# .htaccess (raiz) — HTTPS forçado + entrega + proteção do que não é app.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # Agent Access: /ai/<token de 32 chars> → ai.php (o path chega em REQUEST_URI)
+  RewriteRule ^ai/([23456789ABCDEFGHJKMNPQRS]{32})$ ai.php [L,QSA]
+</IfModule>
+
+# Não listar diretórios.
+Options -Indexes
+
+# Ficheiros de desenvolvimento/documentação — nunca servidos (seguro de rede caso
+# a pasta inteira seja carregada por FTP). llms.txt fica PÚBLICO de propósito.
+<FilesMatch "^(dev-server\.py|dev-db\.json|schema\.sql|PRODUCT\.md|DESIGN\.md|MEMORY\.md|AGENTS\.md|DEPLOY\.md)$">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 ^/(docs|\.qoder|\.vendor|\.superpowers|\.impeccable)(/|$)
+
+# Compressão — o index.html tem ~260 KB; gzip baixa isto para ~1/4.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cache estática: vídeo/imagens 30 dias; HTML sempre fresco (o app itera).
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType video/mp4 "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType text/css "access plus 0 seconds"
+</IfModule>

@@ -1,0 +1,13 @@
+# SprintG
+
+Gestor de sprints (projetos, sprints, tarefas) num único app web.
+
+## Agent Access
+
+Utilizadores podem emitir um link de agente (`/ai/<TOKEN>`) no painel (Conta → Acesso de IA).
+Esse link é uma API GET-only auto-descritiva para chatbots e CLIs: leitura do tabuleiro,
+criação de projetos/sprints/tarefas e mudança de estado de tarefas.
+
+- Ponto de entrada por conta: `GET https://<dominio>/ai/<TOKEN>` devolve o manual e os schemas.
+- Sem token válido, nada é exposto. Não existe endpoint público sem token.
+- Não há edição de textos nem eliminação via agente.

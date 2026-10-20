@@ -1,0 +1,14 @@
+# api/.htaccess — proteção do backend
+
+# 1) Passa o header Authorization para o PHP (muitos hosts Apache partilhadamente
+#    removem-no; sem isto o bearer token não chega ao require_auth()).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# 2) Nunca servir ficheiros de infraestrutura (defesa em profundidade; o ideal é
+#    estarem FORA da webroot). Bloqueamos config/db/bootstrap/reauth.
+<FilesMatch "^(config|db|bootstrap|reauth|ai_lib)\.php$">
+  Require all denied
+</FilesMatch>
