@@ -5,9 +5,16 @@ dev-db.json
 # Cópia de deploy (gerada a partir do projeto)
 enviar para o server/
 
-# Ferramentas de agente / caches pesadas
+# Ferramentas de agente e documentação interna
+.qoder/
+.superpowers/
 .impeccable/
 .vendor/
+docs/
+AGENTS.md
+MEMORY.md
+PRODUCT.md
+DESIGN.md
 
 # Diversos OS
 Thumbs.db
